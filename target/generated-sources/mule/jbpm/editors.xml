@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<namespace xmlns="http://www.mulesoft.org/schema/mule/tooling.attributes" xmlns:mule="http://www.mulesoft.org/schema/mule/core" url="http://www.mulesoft.org/schema/mule/jbpm" prefix="jbpm">
+  <global-cloud-connector versions="[3.5.0,8.0.0]" caption="JBPM" description="" icon="" localId="parentConfig" image="" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric"></global-cloud-connector>
+  <nested caption="" description="" localId="connection-pooling-profile" abstract="true">
+    <radioBoolean name="defaultPoolingProfile" caption="Use default connection pool configuration" description="Use default connection pool configuration." fillLine="true"></radioBoolean>
+    <radioBoolean name="customPoolingProfile" caption="Define connection pool configuration" description="Define connection pool configuration." fillLine="true"></radioBoolean>
+    <integer defaultValue="5" min="-1" step="0" name="maxActive" caption="Max active" description="Controls the maximum number of connections that can be borrowed from the pool at one time. When set to a negative value, there is no limit to the number of connections that may be active at one time. When maxActive is exceeded, the pool is said to be exhausted." controlled="customPoolingProfile" indented="true" fillLine="true"></integer>
+    <integer defaultValue="5" min="-1" step="0" name="maxIdle" caption="Max idle" description="Controls the maximum number of connections that can sit idle in the pool at any time. When set to a negative value, there is no limit to the number of connections that may be idle at one time." controlled="customPoolingProfile" indented="true" fillLine="true"></integer>
+    <enum defaultValue="INITIALISE_ONE" name="initialisationPolicy" caption="Initialisation policy" description="Determines how connections in a pool should be initialized. The possible values are: INITIALISE_NONE (will not load any connection into the pool on startup), INITIALISE_ONE (will load one initial connection into the pool on startup), or INITIALISE_ALL (will load all connections in the pool on startup)" alwaysFill="true" controlled="customPoolingProfile" indented="true">
+      <option value="INITIALISE_NONE"></option>
+      <option value="INITIALISE_ONE"></option>
+      <option value="INITIALISE_ALL"></option>
+    </enum>
+    <enum defaultValue="WHEN_EXHAUSTED_GROW" name="exhaustedAction" caption="Exhausted action" description="Specifies the behavior of the connection pool when the pool is exhausted. Possible values are: &quot;WHEN_EXHAUSTED_FAIL&quot;, which will throw a NoSuchElementException, &quot;WHEN_EXHAUSTED_WAIT&quot;, which will block by invoking Object.wait(long) until a new or idle object is available, or WHEN_EXHAUSTED_GROW, which will create a new connection and return it, essentially making maxActive meaningless. If a positive maxWait value is supplied, it will block for at most that many milliseconds, after which a NoSuchElementException will be thrown. If maxThreadWait is a negative value, it will block indefinitely." alwaysFill="true" controlled="customPoolingProfile" indented="true">
+      <option value="WHEN_EXHAUSTED_WAIT"></option>
+      <option value="WHEN_EXHAUSTED_FAIL"></option>
+      <option value="WHEN_EXHAUSTED_GROW"></option>
+    </enum>
+    <integer defaultValue="5" min="-1" step="0" name="maxWait" caption="Max wait" description="When exhausted action is Wait (or block) this is the amount of time in milliseconds that the pool will wait before failing. Setting a negative value will block indefinitely until an idle instance becomes available." controlled="customPoolingProfile" indented="true" fillLine="true"></integer>
+    <integer defaultValue="1800000" min="-1" step="0" name="minEvictionMillis" caption="Min eviction (ms)" description="Determines the minimum amount of time a connection may sit idle in the pool before it is eligible for eviction. When non-positive, no connections will be evicted from the pool due to idle time alone." controlled="customPoolingProfile" indented="true" fillLine="true"></integer>
+    <integer defaultValue="-1" min="-1" step="0" name="evictionCheckIntervalMillis" caption="Eviction check interval (ms)" description="Specifies the number of milliseconds between runs of the connection evictor. When non-positive, no connection evictor is executed." controlled="customPoolingProfile" indented="true" fillLine="true"></integer>
+  </nested>
+  <nested caption="" description="" localId="reconnectionStrategyElement" abstract="true">
+    <label name="connectionLabel" caption="Define how mule should attempt to handle a connection failure" description=""></label>
+    <radioBoolean name="noReconnection" caption="Do not use a Reconnection strategy" description="Disable reconection strategy" fillLine="true"></radioBoolean>
+    <radioBoolean name="standardReconnection" caption="Standard Reconnection" description="A reconnection strategy that allows the user to configure how many times a reconnection should be attempted and how long to wait between attempts." fillLine="true"></radioBoolean>
+    <integer defaultValue="2000" min="1" max="2147483647" step="1" name="reconnectionFrequency" caption="Frequency (ms)" description="How often (in ms) to reconnect" controlled="standardReconnection" indented="true"></integer>
+    <integer defaultValue="2" min="1" max="2147483647" step="1" name="reconnectionAttemps" caption="Reconnection Attempts" description="How many reconnection attempts to make" controlled="standardReconnection,!reconnectForever" indented="true"></integer>
+    <boolean name="reconnectForever" caption="Reconnect Forever" description="A reconnection strategy that retries an infinite number of times at the specified frequency." supportsExpressions="false" controlled="standardReconnection" indented="true"></boolean>
+    <radioBoolean name="customReconnection" caption="Custom Reconnection" description="A user-defined reconnection strategy." fillLine="true"></radioBoolean>
+    <classname name="class" caption="Class" description="A class that implements the RetryPolicyTemplate interface." controlled="customReconnection" indented="true"></classname>
+    <childElement allowMultiple="true" name="http://www.springframework.org/schema/beans/property" caption="Properties" description="Property elements." controlled="customReconnection"></childElement>
+  </nested>
+  <global-cloud-connector versions="[3.5.0,8.0.0]" caption="JBPM: HTTP Basic Auth" description="Global HTTP Basic Auth configuration information. File Name : ConnectionManagementStrategy.java Author :
+sravanthi.bhaskara@whishworks.com Date: 12-December-2015 Description : This
+class has the following responsibilities: 1) Defines a connection strategy
+for basic username and password authentication. 2) Test connection
+connectivity." icon="icons/small/jbpm-connector-24x16.png" localId="JBPM_Config" image="icons/large/jbpm-connector-48x32.png" abstract="false" extends="http://www.mulesoft.org/schema/mule/jbpm/parentConfig" connectivityTesting="on" connectivityTestingLabel="Test Connection..." metaData="static" metaDataKeyDisplay="DISPLAY_NAME" supportsUserDefinedMetaData="false">
+    <attribute-category caption="General" description="Jbpm configuration properties.">
+      <group id="jbpmGenericProperties" caption="Basic Settings">
+        <name name="name" caption="Name" description="Give a name to this configuration so it can be later referenced by config-ref." required="true"></name>
+      </group>
+      <group id="connection" caption="Connection">
+        <string name="username" caption="Username" description="A username." required="true" javaType="java.lang.String"></string>
+        <password name="password" caption="Password" description="A password." required="true" javaType="java.lang.String"></password>
+      </group>
+      <group id="general" caption="General">
+        <string defaultValue="http://localhost:8080/jbpm-console/rest" name="url" caption="Url" description="" supportsExpressions="false" required="false" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+    <attribute-category caption="Pooling Profile" description="Pooling profile options.">
+      <group id="poolingProfile" caption="Pooling Profile">
+        <childElement inplace="true" name="http://www.mulesoft.org/schema/mule/jbpm/connection-pooling-profile" caption="" description="" valuePersistence="org.mule.tooling.ui.modules.core.widgets.meta.PoolingProfileValuePersistence"></childElement>
+      </group>
+    </attribute-category>
+    <attribute-category caption="Reconnection" description="Reconnection options.">
+      <group id="reconnectionStrategies" caption="Strategies">
+        <childElement inplace="true" name="http://www.mulesoft.org/schema/mule/core/reconnectionStrategyElement" caption="" description="" valuePersistence="org.mule.tooling.ui.modules.core.widgets.meta.HTTPTransactionValuePersistence"></childElement>
+        <childElement allowSubTypes="true" allowedSubTypes="http://www.mulesoft.org/schema/mule/core/reconnect,http://www.mulesoft.org/schema/mule/core/reconnect-custom-strategy,http://www.mulesoft.org/schema/mule/core/reconnect-forever" name="http://www.mulesoft.org/schema/mule/core/abstractReconnectionStrategy" caption="" description="" visibleInDialog="false"></childElement>
+      </group>
+    </attribute-category>
+  </global-cloud-connector>
+  <cloud-connector caption="Abstractjbpmconnectorgeneric" description="Interact with Jbpm." icon="icons/small/jbpm-connector-24x16.png" localId="abstractJbpmConnectorGeneric" image="icons/large/jbpm-connector-48x32.png" abstract="true">
+    <attribute-category caption="General" description="General.">
+      <group id="abstractJbpmConnectorGeneric" caption="Basic Settings">
+        <globalRef requiredType="http://www.mulesoft.org/schema/mule/jbpm/JBPM_Config" name="config-ref" caption="Connector Configuration" description="Specify which configuration to use for this invocation." required="true"></globalRef>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector versions="[3.5.0,8.0.0]" aliasId="org.mule.tooling.ui.modules.core.pattern.jbpm" caption="JBPM" description="File Name : JBPMConnector.java Author : sravanthi.bhaskara@whishworks.com Date:
+12-December-2015 Description : This class has the following responsibilities:
+1) This class will export its functionalities as a Mule Connector using @Connector
+annotation 2) Perform basic authentication to the call 3) Generate Custom
+processor to make JBPM Restful calls." icon="icons/small/jbpm-connector-24x16.png" localId="jbpm-connector" image="icons/large/jbpm-connector-48x32.png" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric">
+    <attribute-category caption="General" description="General.">
+      <group id="jbpmConnectorGeneric" caption="Basic Settings">
+        <modeSwitch alwaysCombo="true" name="Jbpm operations to execute" caption="Operation" description="Operation.">
+          <no-operation abstractElement="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" versions="[3.5.0,8.0.0]" connector-name="processor"></no-operation>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-hist-proc-def-id" modeLabel="Get hist proc def id"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-hist-proc-inst-id-node" modeLabel="Get hist proc inst id node"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-history-instances" modeLabel="Get history instances"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-history-proc-inst-id" modeLabel="Get history proc inst id"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-history-proc-inst-id-child" modeLabel="Get history proc inst id child"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-history-proc-inst-id-node-id" modeLabel="Get history proc inst id node id"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-history-proc-inst-id-var" modeLabel="Get history proc inst id var"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-history-proc-inst-id-var-id" modeLabel="Get history proc inst id var id"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-history-var-id-inst" modeLabel="Get history var id inst"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-history-var-id-val" modeLabel="Get history var id val"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-history-var-id-val-inst" modeLabel="Get history var id val inst"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-process-instance-details" modeLabel="Get process instance details"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-task-content" modeLabel="Get task content"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-task-content-id" modeLabel="Get task content id"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/get-task-query" modeLabel="Get task query"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-history-clear" modeLabel="Post history clear"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-process-inst-with-vars-details" modeLabel="Post process inst with vars details"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-process-instance-start-details" modeLabel="Post process instance start details"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-task-claim" modeLabel="Post task claim"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-task-claimnextavailable" modeLabel="Post task claimnextavailable"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-task-complete" modeLabel="Post task complete"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-task-fail" modeLabel="Post task fail"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-task-release" modeLabel="Post task release"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-task-resume" modeLabel="Post task resume"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-task-start" modeLabel="Post task start"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-task-stop" modeLabel="Post task stop"></mode>
+          <mode modeId="http://www.mulesoft.org/schema/mule/jbpm/post-task-suspend" modeLabel="Post task suspend"></mode>
+        </modeSwitch>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get Hist Proc Def Id" icon="icons/small/jbpm-connector-24x16.png" localId="get-hist-proc-def-id" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="processDefId" caption="Process Def Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get Hist Proc Inst Id Node" icon="icons/small/jbpm-connector-24x16.png" localId="get-hist-proc-inst-id-node" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="ProcInstId" caption="Proc Inst Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get History Instances" icon="icons/small/jbpm-connector-24x16.png" localId="get-history-instances" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General."></attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get History Proc Inst Id" icon="icons/small/jbpm-connector-24x16.png" localId="get-history-proc-inst-id" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="ProcInstId" caption="Proc Inst Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get History Proc Inst Id Child" icon="icons/small/jbpm-connector-24x16.png" localId="get-history-proc-inst-id-child" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="ProcInstId" caption="Proc Inst Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get History Proc Inst Id Node Id" icon="icons/small/jbpm-connector-24x16.png" localId="get-history-proc-inst-id-node-id" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="ProcInstId" caption="Proc Inst Id" description="" required="true" javaType="java.lang.String"></string>
+        <string name="nodeId" caption="Node Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get History Proc Inst Id Var" icon="icons/small/jbpm-connector-24x16.png" localId="get-history-proc-inst-id-var" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="ProcInstId" caption="Proc Inst Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get History Proc Inst Id Var Id" icon="icons/small/jbpm-connector-24x16.png" localId="get-history-proc-inst-id-var-id" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="ProcInstId" caption="Proc Inst Id" description="" required="true" javaType="java.lang.String"></string>
+        <string name="varId" caption="Var Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get History Var Id Inst" icon="icons/small/jbpm-connector-24x16.png" localId="get-history-var-id-inst" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="varId" caption="Var Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get History Var Id Val" icon="icons/small/jbpm-connector-24x16.png" localId="get-history-var-id-val" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="value" caption="Value" description="" required="true" javaType="java.lang.String"></string>
+        <string name="varId" caption="Var Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get History Var Id Val Inst" icon="icons/small/jbpm-connector-24x16.png" localId="get-history-var-id-val-inst" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="value" caption="Value" description="" required="true" javaType="java.lang.String"></string>
+        <string name="varId" caption="Var Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get Process Instance Details" icon="icons/small/jbpm-connector-24x16.png" localId="get-process-instance-details" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="deploymentId" caption="Deployment Id" description="" required="true" javaType="java.lang.String"></string>
+        <string name="procInstId" caption="Proc Inst Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get Task Content" icon="icons/small/jbpm-connector-24x16.png" localId="get-task-content" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get Task Content Id" icon="icons/small/jbpm-connector-24x16.png" localId="get-task-content-id" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="contentId" caption="Content Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Get Task Query" icon="icons/small/jbpm-connector-24x16.png" localId="get-task-query" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General."></attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post History Clear" icon="icons/small/jbpm-connector-24x16.png" localId="post-history-clear" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General."></attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Process Inst With Vars Details" icon="icons/small/jbpm-connector-24x16.png" localId="post-process-inst-with-vars-details" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="deploymentId" caption="Deployment Id" description="" required="true" javaType="java.lang.String"></string>
+        <string name="procDefId" caption="Proc Def Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Process Instance Start Details" icon="icons/small/jbpm-connector-24x16.png" localId="post-process-instance-start-details" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="deploymentId" caption="Deployment Id" description="" required="true" javaType="java.lang.String"></string>
+        <string name="procDefId" caption="Proc Def Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Task Claim" icon="icons/small/jbpm-connector-24x16.png" localId="post-task-claim" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Task Claimnextavailable" icon="icons/small/jbpm-connector-24x16.png" localId="post-task-claimnextavailable" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Task Complete" icon="icons/small/jbpm-connector-24x16.png" localId="post-task-complete" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Task Fail" icon="icons/small/jbpm-connector-24x16.png" localId="post-task-fail" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Task Release" icon="icons/small/jbpm-connector-24x16.png" localId="post-task-release" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Task Resume" icon="icons/small/jbpm-connector-24x16.png" localId="post-task-resume" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Task Start" icon="icons/small/jbpm-connector-24x16.png" localId="post-task-start" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Task Stop" icon="icons/small/jbpm-connector-24x16.png" localId="post-task-stop" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+  <cloud-connector returnType="java.lang.Object" caption="Post Task Suspend" icon="icons/small/jbpm-connector-24x16.png" localId="post-task-suspend" image="icons/large/jbpm-connector-48x32.png" abstract="true" extends="http://www.mulesoft.org/schema/mule/jbpm/abstractJbpmConnectorGeneric" metaData="static">
+    <attribute-category caption="General" description="General.">
+      <group id="general" caption="General">
+        <string name="taskId" caption="Task Id" description="" required="true" javaType="java.lang.String"></string>
+      </group>
+    </attribute-category>
+  </cloud-connector>
+</namespace>

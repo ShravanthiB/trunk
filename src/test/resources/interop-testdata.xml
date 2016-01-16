@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<connector name="JBPM">
+    <properties>
+        <connectivity-support>true</connectivity-support>
+        <OAuth-authentication>false</OAuth-authentication>
+        <metadata>static</metadata>
+        <datasense-enabled>true</datasense-enabled>
+        <transformer>false</transformer>
+    </properties>
+    <global-config credentialsFile="">
+        <config name="JBPM_Config">
+            <attributes>
+                <attribute name="name" use="required" caption="Name" group="Basic Settings" type="name" javaType="java.lang.String" category="General"></attribute>
+                <attribute name="url" use="optional" caption="Url" group="General" type="string" javaType="java.lang.String" default="http://localhost:8080/jbpm-console/rest" category="General"></attribute>
+                <attribute name="jbpmUrl" use="optional" caption="Jbpm Url" group="General" type="string" javaType="java.lang.String" default="http://localhost:8080/jbpm-console/rest" category="General"></attribute>
+                <attribute name="username" use="required" caption="Username" group="Connection" type="string" javaType="java.lang.String" category="General"></attribute>
+                <attribute name="password" use="required" caption="Password" group="Connection" type="password" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+        </config>
+    </global-config>
+    <message-processors>
+        <processor name="getProcessInstanceDetails" xmlName="get-process-instance-details" caption="Get process instance details">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="deploymentId" use="required" caption="Deployment Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+                <attribute name="procInstId" use="required" caption="Proc Inst Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postProcessInstanceStartDetails" xmlName="post-process-instance-start-details" caption="Post process instance start details">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="deploymentId" use="required" caption="Deployment Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+                <attribute name="procDefId" use="required" caption="Proc Def Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postTaskComplete" xmlName="post-task-complete" caption="Post task complete">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postTaskRelease" xmlName="post-task-release" caption="Post task release">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postTaskClaim" xmlName="post-task-claim" caption="Post task claim">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postTaskClaimnextavailable" xmlName="post-task-claimnextavailable" caption="Post task claimnextavailable">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getTaskQuery" xmlName="get-task-query" caption="Get task query">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes/>
+            <childElements/>
+        </processor>
+        <processor name="postTaskFail" xmlName="post-task-fail" caption="Post task fail">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postTaskStart" xmlName="post-task-start" caption="Post task start">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postTaskStop" xmlName="post-task-stop" caption="Post task stop">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postTaskSuspend" xmlName="post-task-suspend" caption="Post task suspend">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postTaskResume" xmlName="post-task-resume" caption="Post task resume">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getTaskContent" xmlName="get-task-content" caption="Get task content">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="taskId" use="required" caption="Task Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getTaskContentId" xmlName="get-task-content-id" caption="Get task content id">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="contentId" use="required" caption="Content Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postProcessInstWithVarsDetails" xmlName="post-process-inst-with-vars-details" caption="Post process inst with vars details">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="deploymentId" use="required" caption="Deployment Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+                <attribute name="procDefId" use="required" caption="Proc Def Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="postHistoryClear" xmlName="post-history-clear" caption="Post history clear">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes/>
+            <childElements/>
+        </processor>
+        <processor name="getHistoryInstances" xmlName="get-history-instances" caption="Get history instances">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes/>
+            <childElements/>
+        </processor>
+        <processor name="getHistoryProcInstId" xmlName="get-history-proc-inst-id" caption="Get history proc inst id">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="ProcInstId" use="required" caption="Proc Inst Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getHistProcInstIdNode" xmlName="get-hist-proc-inst-id-node" caption="Get hist proc inst id node">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="ProcInstId" use="required" caption="Proc Inst Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getHistoryProcInstIdChild" xmlName="get-history-proc-inst-id-child" caption="Get history proc inst id child">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="ProcInstId" use="required" caption="Proc Inst Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getHistoryProcInstIdVar" xmlName="get-history-proc-inst-id-var" caption="Get history proc inst id var">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="ProcInstId" use="required" caption="Proc Inst Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getHistoryProcInstIdNodeId" xmlName="get-history-proc-inst-id-node-id" caption="Get history proc inst id node id">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="ProcInstId" use="required" caption="Proc Inst Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+                <attribute name="nodeId" use="required" caption="Node Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getHistoryProcInstIdVarId" xmlName="get-history-proc-inst-id-var-id" caption="Get history proc inst id var id">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="ProcInstId" use="required" caption="Proc Inst Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+                <attribute name="varId" use="required" caption="Var Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getHistoryVarIdVal" xmlName="get-history-var-id-val" caption="Get history var id val">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="varId" use="required" caption="Var Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+                <attribute name="value" use="required" caption="Value" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getHistProcDefId" xmlName="get-hist-proc-def-id" caption="Get hist proc def id">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="processDefId" use="required" caption="Process Def Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getHistoryVarIdInst" xmlName="get-history-var-id-inst" caption="Get history var id inst">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="varId" use="required" caption="Var Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+        <processor name="getHistoryVarIdValInst" xmlName="get-history-var-id-val-inst" caption="Get history var id val inst">
+            <properties>
+                <datamapper input="" output=""/>
+                <auto-paging>false</auto-paging>
+                <query-support>false</query-support>
+            </properties>
+            <attributes>
+                <attribute name="varId" use="required" caption="Var Id" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+                <attribute name="value" use="required" caption="Value" group="General" type="string" javaType="java.lang.String" category="General"></attribute>
+            </attributes>
+            <childElements/>
+        </processor>
+    </message-processors>
+</connector>

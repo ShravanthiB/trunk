@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jbpm="http://www.mulesoft.org/schema/mule/jbpm" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.mulesoft.org/schema/mule/jbpm http://www.mulesoft.org/schema/mule/jbpm/current/mule-jbpm.xsd"
+>
+
+<context:property-placeholder location="automation-credentials.properties" />
+
+<jbpm:JBPM_Config username="${jbpm.username}" password="${jbpm.password}" url="${jbpm.url}" name="Jbpm" doc:name="Jbpm"></jbpm:JBPM_Config>
+
+<flow name="get-process-instance-details" doc:name="GetProcessInstanceDetails">
+	<jbpm:get-process-instance-details config-ref="Jbpm" deploymentId="#[flowVars.deploymentId]"  procInstId="#[flowVars.procInstId]" />
+</flow>
+
+<flow name="post-process-instance-start-details" doc:name="PostProcessInstanceStartDetails">
+	<jbpm:post-process-instance-start-details config-ref="Jbpm" deploymentId="#[flowVars.deploymentId]"  procDefId="#[flowVars.procDefId]" />
+</flow>
+
+<flow name="post-task-complete" doc:name="PostTaskComplete">
+	<jbpm:post-task-complete config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="post-task-release" doc:name="PostTaskRelease">
+	<jbpm:post-task-release config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="post-task-claim" doc:name="PostTaskClaim">
+	<jbpm:post-task-claim config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="post-task-claimnextavailable" doc:name="PostTaskClaimnextavailable">
+	<jbpm:post-task-claimnextavailable config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="get-task-query" doc:name="GetTaskQuery">
+	<jbpm:get-task-query config-ref="Jbpm"/>
+</flow>
+
+<flow name="post-task-fail" doc:name="PostTaskFail">
+	<jbpm:post-task-fail config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="post-task-start" doc:name="PostTaskStart">
+	<jbpm:post-task-start config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="post-task-stop" doc:name="PostTaskStop">
+	<jbpm:post-task-stop config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="post-task-suspend" doc:name="PostTaskSuspend">
+	<jbpm:post-task-suspend config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="post-task-resume" doc:name="PostTaskResume">
+	<jbpm:post-task-resume config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="get-task-content" doc:name="GetTaskContent">
+	<jbpm:get-task-content config-ref="Jbpm" taskId="#[flowVars.taskId]" />
+</flow>
+
+<flow name="get-task-content-id" doc:name="GetTaskContentId">
+	<jbpm:get-task-content-id config-ref="Jbpm" contentId="#[flowVars.contentId]" />
+</flow>
+
+<flow name="post-process-inst-with-vars-details" doc:name="PostProcessInstWithVarsDetails">
+	<jbpm:post-process-inst-with-vars-details config-ref="Jbpm" deploymentId="#[flowVars.deploymentId]"  procDefId="#[flowVars.procDefId]" />
+</flow>
+
+<flow name="post-history-clear" doc:name="PostHistoryClear">
+	<jbpm:post-history-clear config-ref="Jbpm"/>
+</flow>
+
+<flow name="get-history-instances" doc:name="GetHistoryInstances">
+	<jbpm:get-history-instances config-ref="Jbpm"/>
+</flow>
+
+<flow name="get-history-proc-inst-id" doc:name="GetHistoryProcInstId">
+	<jbpm:get-history-proc-inst-id config-ref="Jbpm" ProcInstId="#[flowVars.ProcInstId]" />
+</flow>
+
+<flow name="get-hist-proc-inst-id-node" doc:name="GetHistProcInstIdNode">
+	<jbpm:get-hist-proc-inst-id-node config-ref="Jbpm" ProcInstId="#[flowVars.ProcInstId]" />
+</flow>
+
+<flow name="get-history-proc-inst-id-child" doc:name="GetHistoryProcInstIdChild">
+	<jbpm:get-history-proc-inst-id-child config-ref="Jbpm" ProcInstId="#[flowVars.ProcInstId]" />
+</flow>
+
+<flow name="get-history-proc-inst-id-var" doc:name="GetHistoryProcInstIdVar">
+	<jbpm:get-history-proc-inst-id-var config-ref="Jbpm" ProcInstId="#[flowVars.ProcInstId]" />
+</flow>
+
+<flow name="get-history-proc-inst-id-node-id" doc:name="GetHistoryProcInstIdNodeId">
+	<jbpm:get-history-proc-inst-id-node-id config-ref="Jbpm" ProcInstId="#[flowVars.ProcInstId]"  nodeId="#[flowVars.nodeId]" />
+</flow>
+
+<flow name="get-history-proc-inst-id-var-id" doc:name="GetHistoryProcInstIdVarId">
+	<jbpm:get-history-proc-inst-id-var-id config-ref="Jbpm" ProcInstId="#[flowVars.ProcInstId]"  varId="#[flowVars.varId]" />
+</flow>
+
+<flow name="get-history-var-id-val" doc:name="GetHistoryVarIdVal">
+	<jbpm:get-history-var-id-val config-ref="Jbpm" varId="#[flowVars.varId]"  value="#[flowVars.value]" />
+</flow>
+
+<flow name="get-hist-proc-def-id" doc:name="GetHistProcDefId">
+	<jbpm:get-hist-proc-def-id config-ref="Jbpm" processDefId="#[flowVars.processDefId]" />
+</flow>
+
+<flow name="get-history-var-id-inst" doc:name="GetHistoryVarIdInst">
+	<jbpm:get-history-var-id-inst config-ref="Jbpm" varId="#[flowVars.varId]" />
+</flow>
+
+<flow name="get-history-var-id-val-inst" doc:name="GetHistoryVarIdValInst">
+	<jbpm:get-history-var-id-val-inst config-ref="Jbpm" varId="#[flowVars.varId]"  value="#[flowVars.value]" />
+</flow>
+
+
+</mule>

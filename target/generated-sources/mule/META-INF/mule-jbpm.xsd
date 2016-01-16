@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:ns2="http://www.mulesoft.org/schema/mule/devkit" xmlns:mule="http://www.mulesoft.org/schema/mule/core" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.mulesoft.org/schema/mule/jbpm" attributeFormDefault="unqualified" elementFormDefault="qualified">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace"></xs:import>
+  <xs:import namespace="http://www.springframework.org/schema/beans" schemaLocation="http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"></xs:import>
+  <xs:import namespace="http://www.mulesoft.org/schema/mule/core" schemaLocation="http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></xs:import>
+  <xs:element xmlns:mule="http://www.mulesoft.org/schema/mule/core" substitutionGroup="mule:abstract-extension" name="JBPM_Config">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="mule:abstractExtensionType">
+          <xs:annotation>
+            <xs:documentation>File Name : ConnectionManagementStrategy.java Author :
+sravanthi.bhaskara@whishworks.com Date: 12-December-2015 Description : This
+class has the following responsibilities: 1) Defines a connection strategy
+for basic username and password authentication. 2) Test connection
+connectivity.</xs:documentation>
+          </xs:annotation>
+          <xs:sequence>
+            <xs:element type="mule:poolingProfileType" minOccurs="0" name="connection-pooling-profile">
+              <xs:annotation>
+                <xs:documentation>Characteristics of the connection pool.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" ref="mule:abstract-reconnection-strategy">
+              <xs:annotation>
+                <xs:documentation>Reconnection strategy that defines how Mule should handle a connection failure.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute type="xs:string" use="required" name="name">
+            <xs:annotation>
+              <xs:documentation>Give a name to this configuration so it can be later referenced by config-ref.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="optional" default="http://localhost:8080/jbpm-console/rest" name="url">
+            <xs:annotation>
+              <xs:documentation></xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="required" name="username">
+            <xs:annotation>
+              <xs:documentation>A username</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute type="xs:string" use="required" name="password">
+            <xs:annotation>
+              <xs:documentation>A password</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetProcessInstanceDetailsType" substitutionGroup="mule:abstract-message-processor" name="get-process-instance-details">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieval process instance. This operation will fail
+(code 400) if the process instance has been completed.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetProcessInstanceDetailsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="deploymentId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="procInstId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostProcessInstanceStartDetailsType" substitutionGroup="mule:abstract-message-processor" name="post-process-instance-start-details">
+    <xs:annotation>
+      <xs:documentation>Custom processor to Start a process</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostProcessInstanceStartDetailsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="deploymentId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="procDefId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostTaskCompleteType" substitutionGroup="mule:abstract-message-processor" name="post-task-complete">
+    <xs:annotation>
+      <xs:documentation>Custom processor to complete a task.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostTaskCompleteType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostTaskReleaseType" substitutionGroup="mule:abstract-message-processor" name="post-task-release">
+    <xs:annotation>
+      <xs:documentation>Custom processor to release a task.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostTaskReleaseType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostTaskClaimType" substitutionGroup="mule:abstract-message-processor" name="post-task-claim">
+    <xs:annotation>
+      <xs:documentation>Custom processor to claim a task.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostTaskClaimType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostTaskClaimnextavailableType" substitutionGroup="mule:abstract-message-processor" name="post-task-claimnextavailable">
+    <xs:annotation>
+      <xs:documentation>Custom processor to claim next available a task.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostTaskClaimnextavailableType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetTaskQueryType" substitutionGroup="mule:abstract-message-processor" name="get-task-query">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve list of available tasks</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetTaskQueryType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostTaskFailType" substitutionGroup="mule:abstract-message-processor" name="post-task-fail">
+    <xs:annotation>
+      <xs:documentation>Custom processor to fail a task</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostTaskFailType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostTaskStartType" substitutionGroup="mule:abstract-message-processor" name="post-task-start">
+    <xs:annotation>
+      <xs:documentation>Custom processor to start a task</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostTaskStartType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostTaskStopType" substitutionGroup="mule:abstract-message-processor" name="post-task-stop">
+    <xs:annotation>
+      <xs:documentation>Custom processor to stop a task</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostTaskStopType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostTaskSuspendType" substitutionGroup="mule:abstract-message-processor" name="post-task-suspend">
+    <xs:annotation>
+      <xs:documentation>Custom processor to suspend a task</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostTaskSuspendType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostTaskResumeType" substitutionGroup="mule:abstract-message-processor" name="post-task-resume">
+    <xs:annotation>
+      <xs:documentation>Custom processor to resume a task</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostTaskResumeType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetTaskContentType" substitutionGroup="mule:abstract-message-processor" name="get-task-content">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve the content for the task Id provided</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetTaskContentType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="taskId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetTaskContentIdType" substitutionGroup="mule:abstract-message-processor" name="get-task-content-id">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve the content for the content Id provided</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetTaskContentIdType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="contentId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostProcessInstWithVarsDetailsType" substitutionGroup="mule:abstract-message-processor" name="post-process-inst-with-vars-details">
+    <xs:annotation>
+      <xs:documentation>Custom processor to start a process and retrieves the list of variables
+associated with the process instance</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostProcessInstWithVarsDetailsType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="deploymentId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="procDefId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="PostHistoryClearType" substitutionGroup="mule:abstract-message-processor" name="post-history-clear">
+    <xs:annotation>
+      <xs:documentation>Custom processor to delete all the history logs</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="PostHistoryClearType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistoryInstancesType" substitutionGroup="mule:abstract-message-processor" name="get-history-instances">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve list of ProcessInstanceLog instances</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistoryInstancesType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistoryProcInstIdType" substitutionGroup="mule:abstract-message-processor" name="get-history-proc-inst-id">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve the ProcessInstanceLog instance associated
+with the specified process instance</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistoryProcInstIdType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="ProcInstId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistProcInstIdNodeType" substitutionGroup="mule:abstract-message-processor" name="get-hist-proc-inst-id-node">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve the list of NodeInstanceLog instances
+associated with the specified process instance</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistProcInstIdNodeType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="ProcInstId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistoryProcInstIdChildType" substitutionGroup="mule:abstract-message-processor" name="get-history-proc-inst-id-child">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve the list of ProcessInstanceLog instances
+associated with any child/sub-processes associated with the specified
+process instance</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistoryProcInstIdChildType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="ProcInstId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistoryProcInstIdVarType" substitutionGroup="mule:abstract-message-processor" name="get-history-proc-inst-id-var">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve the list of VariableInstanceLog instances
+associated with the specified process instance</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistoryProcInstIdVarType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="ProcInstId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistoryProcInstIdNodeIdType" substitutionGroup="mule:abstract-message-processor" name="get-history-proc-inst-id-node-id">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve list of NodeInstanceLog instances associated
+with the specified process instance that have the given (node) id</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistoryProcInstIdNodeIdType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="ProcInstId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="nodeId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistoryProcInstIdVarIdType" substitutionGroup="mule:abstract-message-processor" name="get-history-proc-inst-id-var-id">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve a list of VariableInstanceLog instances
+associated with the specified process instance that have the given
+(variable) id</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistoryProcInstIdVarIdType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="ProcInstId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="varId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistoryVarIdValType" substitutionGroup="mule:abstract-message-processor" name="get-history-var-id-val">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve a list of VariableInstanceLog instances
+associated with the specified variable id that contain the value
+specified</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistoryVarIdValType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="varId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="value">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistProcDefIdType" substitutionGroup="mule:abstract-message-processor" name="get-hist-proc-def-id">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve a list of ProcessInstanceLog instances
+associated with the specified process definition</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistProcDefIdType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="processDefId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistoryVarIdInstType" substitutionGroup="mule:abstract-message-processor" name="get-history-var-id-inst">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve a list of ProcessInstance instances that
+contain the variable specified by the given variable id.</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistoryVarIdInstType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="varId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns="http://www.mulesoft.org/schema/mule/jbpm" xmlns:mule="http://www.mulesoft.org/schema/mule/core" type="GetHistoryVarIdValInstType" substitutionGroup="mule:abstract-message-processor" name="get-history-var-id-val-inst">
+    <xs:annotation>
+      <xs:documentation>Custom processor to retrieve a list of ProcessInstance instances that
+contain the variable specified by the given variable id which contains
+the (variable) value specified</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:complexType name="GetHistoryVarIdValInstType">
+    <xs:complexContent>
+      <xs:extension xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:abstractMessageProcessorType">
+        <xs:attribute type="xs:string" use="required" name="config-ref">
+          <xs:annotation>
+            <xs:documentation>Specify which configuration to use for this invocation.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="varId">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" use="required" name="value">
+          <xs:annotation>
+            <xs:documentation></xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="OnNoTokenPolicyEnumType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="EXCEPTION"></xs:enumeration>
+          <xs:enumeration value="STOP_FLOW"></xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="integerType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:integer"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="decimalType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:decimal"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="floatType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:float"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="doubleType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:double"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="dateTimeType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:dateTime"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="longType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:long"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="byteType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:byte"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="booleanType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:boolean"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="anyUriType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:anyURI"></xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="charType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:minLength value="1"></xs:minLength>
+          <xs:maxLength value="1"></xs:maxLength>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction xmlns:mule="http://www.mulesoft.org/schema/mule/core" base="mule:propertyPlaceholderType"></xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+</xs:schema>

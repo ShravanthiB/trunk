@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+<!--getProcessInstanceDetails-->
+<util:map id="getProcessInstanceDetailsTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="deploymentId" value=""/>
+        <entry key="procInstId" value=""/>
+    </util:map>
+<!--postProcessInstanceStartDetails-->
+<util:map id="postProcessInstanceStartDetailsTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="deploymentId" value=""/>
+        <entry key="procDefId" value=""/>
+    </util:map>
+<!--postTaskComplete-->
+<util:map id="postTaskCompleteTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--postTaskRelease-->
+<util:map id="postTaskReleaseTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--postTaskClaim-->
+<util:map id="postTaskClaimTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--postTaskClaimnextavailable-->
+<util:map id="postTaskClaimnextavailableTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--getTaskQuery-->
+<util:map id="getTaskQueryTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ </util:map>
+<!--postTaskFail-->
+<util:map id="postTaskFailTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--postTaskStart-->
+<util:map id="postTaskStartTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--postTaskStop-->
+<util:map id="postTaskStopTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--postTaskSuspend-->
+<util:map id="postTaskSuspendTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--postTaskResume-->
+<util:map id="postTaskResumeTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--getTaskContent-->
+<util:map id="getTaskContentTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="taskId" value=""/>
+    </util:map>
+<!--getTaskContentId-->
+<util:map id="getTaskContentIdTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="contentId" value=""/>
+    </util:map>
+<!--postProcessInstWithVarsDetails-->
+<util:map id="postProcessInstWithVarsDetailsTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="deploymentId" value=""/>
+        <entry key="procDefId" value=""/>
+    </util:map>
+<!--postHistoryClear-->
+<util:map id="postHistoryClearTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ </util:map>
+<!--getHistoryInstances-->
+<util:map id="getHistoryInstancesTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ </util:map>
+<!--getHistoryProcInstId-->
+<util:map id="getHistoryProcInstIdTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="ProcInstId" value=""/>
+    </util:map>
+<!--getHistProcInstIdNode-->
+<util:map id="getHistProcInstIdNodeTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="ProcInstId" value=""/>
+    </util:map>
+<!--getHistoryProcInstIdChild-->
+<util:map id="getHistoryProcInstIdChildTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="ProcInstId" value=""/>
+    </util:map>
+<!--getHistoryProcInstIdVar-->
+<util:map id="getHistoryProcInstIdVarTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="ProcInstId" value=""/>
+    </util:map>
+<!--getHistoryProcInstIdNodeId-->
+<util:map id="getHistoryProcInstIdNodeIdTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="ProcInstId" value=""/>
+        <entry key="nodeId" value=""/>
+    </util:map>
+<!--getHistoryProcInstIdVarId-->
+<util:map id="getHistoryProcInstIdVarIdTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="ProcInstId" value=""/>
+        <entry key="varId" value=""/>
+    </util:map>
+<!--getHistoryVarIdVal-->
+<util:map id="getHistoryVarIdValTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="varId" value=""/>
+        <entry key="value" value=""/>
+    </util:map>
+<!--getHistProcDefId-->
+<util:map id="getHistProcDefIdTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="processDefId" value=""/>
+    </util:map>
+<!--getHistoryVarIdInst-->
+<util:map id="getHistoryVarIdInstTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="varId" value=""/>
+    </util:map>
+<!--getHistoryVarIdValInst-->
+<util:map id="getHistoryVarIdValInstTestData" key-type="java.lang.String" map-class="java.util.HashMap" scope="prototype" value-type="java.lang.Object">
+ <entry key="varId" value=""/>
+        <entry key="value" value=""/>
+    </util:map>
+</beans>

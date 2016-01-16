@@ -1,0 +1,4 @@
+org.mule.modules.jbpm
+org.mule.modules.jbpm.config
+org.mule.modules.jbpm.exceptions
+org.mule.modules.jbpm.util
